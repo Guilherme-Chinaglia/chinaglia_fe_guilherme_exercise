@@ -3,7 +3,10 @@ import {useNavigate} from 'react-router-dom';
 import {Teams, UserData} from 'types';
 import {Container} from './styles';
 
-interface Props {
+/**
+ * Rename Props to CardProps
+ */
+interface CardProps {
     id?: string;
     url?: string;
     columns: Array<{
@@ -14,27 +17,35 @@ interface Props {
     navigationProps?: UserData | Teams;
 }
 
-const Card = ({
+const Card: React.FC<CardProps> = ({
     id,
     columns,
     url,
     hasNavigation = true,
     navigationProps = null,
-}: Props): JSX.Element => {
+}) => {
     const navigate = useNavigate();
+
+    /**
+     * Create the handleCardClick function separate from the html.
+     *  It's better for maintenance.
+    */
+
+    const handleCardClick = (e: React.MouseEvent) => { // Add the React.MouseEvent type
+        e.preventDefault();
+
+        if (hasNavigation) {
+           navigate(url, {
+                state: navigationProps,
+            });
+        }
+    };
 
     return (
         <Container
             data-testid={`cardContainer-${id}`}
             hasNavigation={hasNavigation}
-            onClick={(e: Event) => {
-                if (hasNavigation) {
-                    navigate(url, {
-                        state: navigationProps,
-                    });
-                }
-                e.preventDefault();
-            }}
+            onClick={handleCardClick}
         >
             {columns.map(({key: columnKey, value}) => (
                 <p key={columnKey}>
