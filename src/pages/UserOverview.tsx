@@ -5,8 +5,13 @@ import Card from '../components/Card';
 import {Container} from '../components/GlobalComponents';
 import Header from '../components/Header';
 
-var mapU = (user: UserData) => {
-    var columns = [
+
+/**
+ * It's generally preferable to use const or let instead of var
+ * Using const and let can help make the code more predictable
+ */
+const UsersData = (user: UserData) => {
+    const columns = [
         {
             key: 'Name',
             value: `${user.firstName} ${user.lastName}`,
@@ -27,10 +32,8 @@ const UserOverview = () => {
     const location = useLocation();
     return (
         <Container>
-            <Header
-                title={`User ${location.state.firstName} ${location.state.lastName}`}
-            />
-            {mapU(location.state)}
+            <Header title={`User ${location.state.firstName} ${location.state.lastName}`} />
+            {UsersData(location.state)}
         </Container>
     );
 };

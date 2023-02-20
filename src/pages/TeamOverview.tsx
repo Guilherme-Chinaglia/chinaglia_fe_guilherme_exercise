@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useLocation, useParams} from 'react-router-dom';
 import {ListItem, UserData} from 'types';
 import {getTeamOverview, getUserData} from '../api';
@@ -7,33 +7,38 @@ import {Container} from '../components/GlobalComponents';
 import Header from '../components/Header';
 import List from '../components/List';
 
-var mapArray = (users: UserData[]) => {
-    return users.map(u => {
-        var columns = [
+/**
+ * It's generally preferable to use const or let instead of var
+ * Using const and let can help make the code more predictable
+ */
+
+const TeamUsersData = (users: UserData[]) => {
+    return users.map(user => {
+        const columns = [
             {
                 key: 'Name',
-                value: `${u.firstName} ${u.lastName}`,
+                value: `${user.firstName} ${user.lastName}`,
             },
             {
                 key: 'Display Name',
-                value: u.displayName,
+                value: user.displayName,
             },
             {
                 key: 'Location',
-                value: u.location,
+                value: user.location,
             },
         ];
         return {
-            id: u.id,
-            url: `/user/${u.id}`,
+            id: user.id,
+            url: `/user/${user.id}`,
             columns,
-            navigationProps: u,
+            navigationProps: user,
         };
     }) as ListItem[];
 };
 
-var mapTLead = tlead => {
-    var columns = [
+const mapTLead = tlead => {
+    const columns = [
         {
             key: 'Team Lead',
             value: '',
@@ -62,16 +67,16 @@ interface PageState {
 const TeamOverview = () => {
     const location = useLocation();
     const {teamId} = useParams();
-    const [pageData, setPageData] = React.useState<PageState>({});
-    const [isLoading, setIsLoading] = React.useState<boolean>(true);
+    const [pageData, setPageData] = useState<PageState>({});
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    React.useEffect(() => {
-        var getTeamUsers = async () => {
+    useEffect(() => {
+        const getTeamUsers = async () => {
             const {teamLeadId, teamMemberIds = []} = await getTeamOverview(teamId);
             const teamLead = await getUserData(teamLeadId);
 
             const teamMembers = [];
-            for(var teamMemberId of teamMemberIds) {
+            for (const teamMemberId of teamMemberIds) {
                 const data = await getUserData(teamMemberId);
                 teamMembers.push(data);
             }
@@ -88,7 +93,7 @@ const TeamOverview = () => {
         <Container>
             <Header title={`Team ${location.state.name}`} />
             {!isLoading && mapTLead(pageData.teamLead)}
-            <List items={mapArray(pageData?.teamMembers ?? [])} isLoading={isLoading} />
+            <List items={TeamUsersData(pageData?.teamMembers ?? [])} isLoading={isLoading} />
         </Container>
     );
 };

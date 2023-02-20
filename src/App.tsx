@@ -5,7 +5,11 @@ import Teams from './pages/Teams';
 import UserOverview from './pages/UserOverview';
 
 const App = () => {
-    var router = createBrowserRouter([
+    /**
+     * It's generally preferable to use const or let instead of var
+     * Using const and let can help make the code more predictable
+     */
+    const router = createBrowserRouter([
         {
             path: '/',
             element: <Teams />,
