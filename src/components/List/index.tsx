@@ -4,13 +4,13 @@ import Card from '../Card';
 import {Spinner} from '../Spinner';
 import {Container} from './styles';
 
-interface Props {
+interface ListProps {
     items?: ListItem[];
     hasNavigation?: boolean;
-    isLoading: string;
+    isLoading: boolean; // The correct type is `boolean`
 }
 
-const List = ({items, hasNavigation = true, isLoading}: Props) => {
+const List = ({items, hasNavigation = true, isLoading}: ListProps) => {
     return (
         <Container>
             {isLoading && <Spinner />}

@@ -24,7 +24,7 @@
       ],
       "plugins": ["@typescript-eslint"],
       "rules": {
-        "no-var": "off",
+        "no-var": "error",
         "no-unsafe-optional-chaining": 0,
         "react/jsx-no-useless-fragment": [2, {"allowExpressions": true}],
         "@typescript-eslint/no-explicit-any": 0,
